@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/92d70a2fd8.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    
+    
+</head>
+<body>
+    <div class="main-container">
+    <div class="header">
+        <p class="logo">Shopping </p>
+        <div class="cart"><i class="fa-solid fa-cart-shopping"></i>
+          <p id="count">0</p>
+     </div>
+      </div>
+      <div class="container">
+        <div id="root"></div>
+        <div class="sidebar">
+          <div class="head">
+            <p>My Cart</p>
+          </div>
+          <div id="cartItem">Your cart is empty</div>
+          <div class="foot">
+            <h3>Total</h3>
+            <h2 id="total">$ 0.00</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  <footer>
+      <div>@Shopping All Rights Reserved</div>       
+  </footer>   
+ <script>
+    const product = [
+    {
+      id: 0,
+      image: 'https://static.helioswatchstore.com/media/catalog/product/b/4/b41083152_1.jpg',
+      title: 'Watch',
+      price: 120,
+    },
+    {
+      id: 1,
+      image: 'https://overlaysnow.com/cdn/shop/files/BeigeSetPhoto_6.jpg?v=1713004700&width=900',
+      title: 'T-Shirt',
+      price: 60,
+    },
+    {
+      id: 2,
+      image: 'https://m.media-amazon.com/images/I/61QRgOgBx0L._SL1500_.jpg',
+      title: 'Mobil',
+      price: 230,
+    },
+    {
+      id: 3,
+      image: 'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/alienware-notebooks/alienware-m18-mlk/media-gallery/ir/copilot-key/laptop-alienware-m18-r2-intel-bk-copilot-gallery-2.psd?fmt=png-alpha&pscan=auto&scl=1&wid=4231&hei=3115&qlt=100,1&resMode=sharp2&size=4231,3115&chrss=full&imwidth=5000',
+      title: 'Loptop',
+      price: 500,
+    }
+  ];
+  const categories = [...new Set(product.map((item) => { return item }))]
+  let i = 0;
+  document.getElementById('root').innerHTML = categories.map((item) => {
+    var { image, title, price } = item;
+    return (
+      `<div class='box'>
+        <div class='img-box'>
+          <img class='images' src=${image}></img>
+        </div>
+        <div class='bottom'>
+          <p>${title}</p>
+          <h2>$ ${price}.00</h2>` +
+          "<button onclick='addtocart(" + (i++) + ")'>Add to cart</button>" +
+        `</div>
+      </div>`
+    )
+  }).join('')
+  
+  var cart = [];
+  
+  function addtocart(a) {
+    cart.push({ ...categories[a] });
+    displaycart();
+  }
+  function delElement(a) {
+    cart.splice(a, 1);
+    displaycart();
+  }
+  
+  function displaycart() {
+    let j = 0, total = 0;
+    document.getElementById("count").innerHTML = cart.length;
+    if (cart.length == 0) {
+      document.getElementById('cartItem').innerHTML = "Your cart is empty";
+      document.getElementById("total").innerHTML = "$ " + 0 + ".00";
+    }
+    else {
+      document.getElementById("cartItem").innerHTML = cart.map((items) => {
+        var { image, title, price } = items;
+        total = total + price;
+        document.getElementById("total").innerHTML = "$ " + total + ".00";
+        return (
+          `<div class='cart-item'>
+            <div class='row-img'>
+              <img class='rowimg' src=${image}>
+            </div>
+            <p style='font-size:12px;'>${title}</p>
+            <h2 style='font-size: 15px;'>$ ${price}.00</h2>` +
+          "<i class='fa-solid fa-trash' onclick='delElement(" + (j++) + ")'></i></div>"
+        );
+      }).join('');
+    }
+  }
+ </script>
+    
+</body>
+</html>
